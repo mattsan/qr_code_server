@@ -1,35 +1,19 @@
-<section class="phx-hero">
-  <h1><%= gettext "Welcome to %{name}!", name: "Phoenix" %></h1>
-  <p>A productive web framework that<br/>does not compromise speed or maintainability.</p>
-</section>
-
-<section class="row">
-  <article class="column">
-    <h2>Resources</h2>
-    <ul>
-      <li>
-        <a href="https://hexdocs.pm/phoenix/overview.html">Guides &amp; Docs</a>
-      </li>
-      <li>
-        <a href="https://github.com/phoenixframework/phoenix">Source</a>
-      </li>
-      <li>
-        <a href="https://github.com/phoenixframework/phoenix/blob/v1.4/CHANGELOG.md">v1.4 Changelog</a>
-      </li>
-    </ul>
-  </article>
-  <article class="column">
-    <h2>Help</h2>
-    <ul>
-      <li>
-        <a href="https://elixirforum.com/c/phoenix-forum">Forum</a>
-      </li>
-      <li>
-        <a href="https://webchat.freenode.net/?channels=elixir-lang">#elixir-lang on Freenode IRC</a>
-      </li>
-      <li>
-        <a href="https://twitter.com/elixirphoenix">Twitter @elixirphoenix</a>
-      </li>
-    </ul>
-  </article>
+<section>
+  <%= form_for :qr, Routes.page_path(@conn, :create), fn f -> %>
+    <%= text_input f, :string %>
+    <%= submit "encode" %>
+  <% end %>
+  <hr />
+  <div>
+    <%= text_input(:svg, :string, value: @string, placeholder: "入力された文字列", disabled: true) %>
+    <%= if @string != "" && @svg != "" do %>
+      <div class="qr-code-container">
+        <%= img_tag "data:image/svg+xml;utf-8,#{@svg}" %>
+      </div>
+    <% else %>
+      <div>
+        <span>NO IMAGE</span>
+      </div>
+    <% end %>
+  </div>
 </section>
