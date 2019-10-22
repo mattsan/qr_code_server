@@ -1,0 +1,21 @@
+<section>
+  <%= form_for :qr, "#", [phx_submit: :submit], fn f -> %>
+    <%= text_input f, :string %>
+    <%= submit "encode" %>
+  <% end %>
+  <hr />
+  <div>
+    <div class="repeat">
+      <%= text_input(:svg, :string, value: @string, placeholder: "入力された文字列", disabled: true) %>
+    </div>
+    <%= if @string != "" && @svg != "" do %>
+      <div class="qr-code-container">
+        <%= img_tag "data:image/svg+xml;utf-8,#{@svg}" %>
+      </div>
+    <% else %>
+      <div>
+        <span>NO IMAGE</span>
+      </div>
+    <% end %>
+  </div>
+</section>

@@ -7,3 +7,7 @@
   text-align: center;
   width: 100%;
 }
+
+.repeat input {
+  border-color: #f0f0f0;
+}
