@@ -12,7 +12,8 @@ config :qr_code_server, QrCodeServerWeb.Endpoint,
   url: [host: "localhost"],
   secret_key_base: "6w3JB1yYVoy/8U8oZiew/x28bMGJ/iD+L6z0zs2gpAPTPm/RC+/OumNkszJYSl5A",
   render_errors: [view: QrCodeServerWeb.ErrorView, accepts: ~w(html json)],
-  pubsub: [name: QrCodeServer.PubSub, adapter: Phoenix.PubSub.PG2]
+  pubsub: [name: QrCodeServer.PubSub, adapter: Phoenix.PubSub.PG2],
+  live_view: [signing_salt: System.get_env("SECRET_SALT")]
 
 # Configures Elixir's Logger
 config :logger, :console,

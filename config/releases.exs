@@ -14,6 +14,7 @@ secret_key_base =
 config :qr_code_server, QrCodeServerWeb.Endpoint,
   url: [host: {:system, "HOST"}, port: {:system, "PORT"}],
   http: [:inet6, port: {:system, "PORT"}],
+  live_view: [signing_salt: System.get_env("SECRET_SALT")],
   secret_key_base: secret_key_base
 
 # ## Using releases (Elixir v1.9+)
