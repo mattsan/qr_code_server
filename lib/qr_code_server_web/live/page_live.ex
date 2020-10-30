@@ -1,39 +1,41 @@
 defmodule QrCodeServerWeb.PageLive do
   use QrCodeServerWeb, :live_view
 
+  require Logger
+
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, query: "", results: %{})}
+    new_socket =
+      socket
+      |> assign(
+        qr_code: "",
+        text: "",
+        level: "low"
+      )
+
+    {:ok, new_socket}
   end
 
   @impl true
-  def handle_event("suggest", %{"q" => query}, socket) do
-    {:noreply, assign(socket, results: search(query), query: query)}
-  end
+  def handle_event("submit", %{"source" => %{"level" => level, "text" => text}}, socket) do
+    qr_code =
+      with {:ok, qr} <- QRCode.create(text, String.to_existing_atom(level)) do
+        {:safe, QRCode.Svg.create(qr)}
+      else
+        error ->
+          Logger.error(inspect(error))
 
-  @impl true
-  def handle_event("search", %{"q" => query}, socket) do
-    case search(query) do
-      %{^query => vsn} ->
-        {:noreply, redirect(socket, external: "https://hexdocs.pm/#{query}/#{vsn}")}
+          ""
+      end
 
-      _ ->
-        {:noreply,
-         socket
-         |> put_flash(:error, "No dependencies found matching \"#{query}\"")
-         |> assign(results: %{}, query: query)}
-    end
-  end
+    new_socket =
+      socket
+      |> assign(
+        qr_code: qr_code,
+        text: text,
+        level: level
+      )
 
-  defp search(query) do
-    if not QrCodeServerWeb.Endpoint.config(:code_reloader) do
-      raise "action disabled when not in development"
-    end
-
-    for {app, desc, vsn} <- Application.started_applications(),
-        app = to_string(app),
-        String.starts_with?(app, query) and not List.starts_with?(desc, ~c"ERTS"),
-        into: %{},
-        do: {app, vsn}
+    {:noreply, new_socket}
   end
 end
