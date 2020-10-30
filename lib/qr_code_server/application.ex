@@ -6,12 +6,15 @@ defmodule QrCodeServer.Application do
   use Application
 
   def start(_type, _args) do
-    # List all child processes to be supervised
     children = [
-      # Start the endpoint when the application starts
+      # Start the Telemetry supervisor
+      QrCodeServerWeb.Telemetry,
+      # Start the PubSub system
+      {Phoenix.PubSub, name: QrCodeServer.PubSub},
+      # Start the Endpoint (http/https)
       QrCodeServerWeb.Endpoint
-      # Starts a worker by calling: QrCodeServer.Worker.start_link(arg)
-      # {QrCodeServer.Worker, arg},
+      # Start a worker by calling: QrCodeServer.Worker.start_link(arg)
+      # {QrCodeServer.Worker, arg}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

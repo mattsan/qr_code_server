@@ -1,8 +1,0 @@
-/* This file is for your main application css. */
-
-@import "./phoenix.css";
-
-.qr-code-container {
-  text-align: center;
-  width: 100%;
-}

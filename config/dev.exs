@@ -51,7 +51,7 @@ config :qr_code_server, QrCodeServerWeb.Endpoint,
     patterns: [
       ~r"priv/static/.*(js|css|png|jpeg|jpg|gif|svg)$",
       ~r"priv/gettext/.*(po)$",
-      ~r"lib/qr_code_server_web/{live,views}/.*(ex)$",
+      ~r"lib/qr_code_server_web/(live|views)/.*(ex)$",
       ~r"lib/qr_code_server_web/templates/.*(eex)$"
     ]
   ]

@@ -10,9 +10,10 @@ use Mix.Config
 # Configures the endpoint
 config :qr_code_server, QrCodeServerWeb.Endpoint,
   url: [host: "localhost"],
-  secret_key_base: "6w3JB1yYVoy/8U8oZiew/x28bMGJ/iD+L6z0zs2gpAPTPm/RC+/OumNkszJYSl5A",
-  render_errors: [view: QrCodeServerWeb.ErrorView, accepts: ~w(html json)],
-  pubsub: [name: QrCodeServer.PubSub, adapter: Phoenix.PubSub.PG2]
+  secret_key_base: "soz7YTaB5PRsGLVbytklTcbZD2M5Z+KyJB0W552/K6otT27GEOsgHXiOt1FzuSYf",
+  render_errors: [view: QrCodeServerWeb.ErrorView, accepts: ~w(html json), layout: false],
+  pubsub_server: QrCodeServer.PubSub,
+  live_view: [signing_salt: "x7pRd4bq"]
 
 # Configures Elixir's Logger
 config :logger, :console,

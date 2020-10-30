@@ -10,7 +10,7 @@ use Mix.Config
 # which you should run after static files are built and
 # before starting your production server.
 config :qr_code_server, QrCodeServerWeb.Endpoint,
-  url: [host: "example.com", port: 80],
+  url: [host: {:system, "HOST"}, port: {:system, "PORT"}],
   cache_static_manifest: "priv/static/cache_manifest.json",
   server: true
 
@@ -26,11 +26,11 @@ config :logger, level: :info
 #       ...
 #       url: [host: "example.com", port: 443],
 #       https: [
-#         :inet6,
 #         port: 443,
 #         cipher_suite: :strong,
 #         keyfile: System.get_env("SOME_APP_SSL_KEY_PATH"),
-#         certfile: System.get_env("SOME_APP_SSL_CERT_PATH")
+#         certfile: System.get_env("SOME_APP_SSL_CERT_PATH"),
+#         transport_options: [socket_opts: [:inet6]]
 #       ]
 #
 # The `cipher_suite` is set to `:strong` to support only the

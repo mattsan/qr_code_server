@@ -1,6 +1,6 @@
 # see https://hexdocs.pm/phoenix/releases.html#containers
 
-FROM elixir:1.9-alpine as build
+FROM elixir:1.11-alpine as build
 
 WORKDIR /app
 
@@ -22,7 +22,9 @@ RUN mix deps.compile
 
 # build assets
 COPY assets ./assets
-RUN npm install --prefix ./assets && npm run deploy --prefix ./assets
+RUN npm install --prefix ./assets
+RUN npm rebuild node-sass --prefix ./assets
+RUN npm run deploy --prefix ./assets
 RUN mix phx.digest
 
 # build project
