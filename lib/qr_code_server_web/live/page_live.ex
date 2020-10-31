@@ -30,7 +30,7 @@ defmodule QrCodeServerWeb.PageLive do
   end
 
   @impl true
-  def handle_event("submit", %{"source" => %{"text" => text}}, socket) do
+  def handle_event("update", %{"source" => %{"text" => text}}, socket) do
     send(self(), :update_qr_code)
 
     new_socket =

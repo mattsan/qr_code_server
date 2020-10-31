@@ -1,10 +1,7 @@
-<form phx-submit="submit">
+<form phx-submit="update" phx-change="update">
   <div class="row">
-    <div class="column column-90">
-      <%= text_input :source, :text, value: @text %>
-    </div>
-    <div class="column column-10">
-      <%= submit gettext("submit") %>
+    <div class="column">
+      <%= text_input :source, :text, value: @text, phx_debounce: 500 %>
     </div>
   </div>
 </form>
