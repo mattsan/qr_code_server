@@ -10,17 +10,52 @@ defmodule QrCodeServerWeb.PageLive do
       |> assign(
         qr_code: "",
         text: "",
-        level: "low"
+        level: :low,
+        generating: false
       )
 
     {:ok, new_socket}
   end
 
   @impl true
-  def handle_event("submit", %{"source" => %{"level" => level, "text" => text}}, socket) do
+  def handle_event("submit", %{"source" => %{"text" => text}}, socket) do
+    send(self(), :update_qr_code)
+
+    new_socket =
+      socket
+      |> assign(
+        text: text,
+        generating: true
+      )
+
+    {:noreply, new_socket}
+  end
+
+  @impl true
+  def handle_event("change-level", %{"code" => %{"level" => level}}, socket) do
+    Logger.debug("change level: #{socket.assigns.level} -> #{level}")
+
+    send(self(), :update_qr_code)
+
+    new_socket =
+      socket
+      |> assign(
+        level: String.to_existing_atom(level),
+        generating: true
+      )
+
+    {:noreply, new_socket}
+  end
+
+  @impl true
+  def handle_info(:update_qr_code, socket) do
+    %{text: text, level: level} = Map.take(socket.assigns, [:text, :level])
+
+    settings = %QRCode.SvgSettings{scale: 5}
+
     qr_code =
-      with {:ok, qr} <- QRCode.create(text, String.to_existing_atom(level)) do
-        {:safe, QRCode.Svg.create(qr)}
+      with {:ok, qr} <- QRCode.create(text, level) do
+        {:safe, QRCode.Svg.create(qr, settings)}
       else
         error ->
           Logger.error(inspect(error))
@@ -32,8 +67,7 @@ defmodule QrCodeServerWeb.PageLive do
       socket
       |> assign(
         qr_code: qr_code,
-        text: text,
-        level: level
+        generating: false
       )
 
     {:noreply, new_socket}
