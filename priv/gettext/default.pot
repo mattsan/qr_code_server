@@ -1,0 +1,26 @@
+## This file is a PO Template file.
+##
+## "msgid"s here are often extracted from source code.
+## Add new translations manually only if they're dynamic
+## translations that can't be statically extracted.
+##
+## Run "mix gettext.extract" to bring this file up to
+## date. Leave "msgstr"s empty as changing them here as no
+## effect: edit them in PO (.po) files instead.
+msgid ""
+msgstr ""
+
+#, elixir-format
+#: lib/qr_code_server_web/live/page_live.html.leex:18
+msgid "generating..."
+msgstr ""
+
+#, elixir-format
+#: lib/qr_code_server_web/live/page_live.html.leex:7
+msgid "submit"
+msgstr ""
+
+#, elixir-format
+#: lib/qr_code_server_web/live/page_live.html.leex:12
+msgid "error correction level"
+msgstr ""

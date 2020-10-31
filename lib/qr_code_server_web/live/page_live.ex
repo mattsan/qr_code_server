@@ -3,6 +3,18 @@ defmodule QrCodeServerWeb.PageLive do
 
   require Logger
 
+  @levels [:low, :medium, :quartile, :high]
+
+  @level_options [
+                   low: dgettext("error_correction_level", "low"),
+                   medium: dgettext("error_correction_level", "medium"),
+                   quartile: dgettext("error_correction_level", "quartile"),
+                   high: dgettext("error_correction_level", "high")
+                 ]
+                 |> Enum.map(fn {value, key} -> [value: value, key: key] end)
+
+  defguard is_level(level) when level in @levels
+
   @impl true
   def mount(_params, _session, socket) do
     new_socket =
@@ -49,17 +61,20 @@ defmodule QrCodeServerWeb.PageLive do
 
   @impl true
   def handle_info(:update_qr_code, socket) do
-    %{text: text, level: level} = Map.take(socket.assigns, [:text, :level])
-
     settings = %QRCode.SvgSettings{scale: 5}
 
     qr_code =
-      with {:ok, qr} <- QRCode.create(text, level) do
+      with %{text: text, level: level} when byte_size(text) > 0 and is_level(level) <-
+             Map.take(socket.assigns, [:text, :level]),
+           {:ok, qr} <- QRCode.create(text, level) do
         {:safe, QRCode.Svg.create(qr, settings)}
       else
-        error ->
-          Logger.error(inspect(error))
+        %{text: text, level: level} ->
+          Logger.warning("Wrong parameter  text: #{inspect(text)} level: #{inspect(level)}")
+          ""
 
+        error ->
+          Logger.warning(inspect(error))
           ""
       end
 
@@ -71,5 +86,9 @@ defmodule QrCodeServerWeb.PageLive do
       )
 
     {:noreply, new_socket}
+  end
+
+  def level_options do
+    @level_options
   end
 end

@@ -1,0 +1,27 @@
+## "msgid"s in this file come from POT (.pot) files.
+##
+## Do not add, change, or remove "msgid"s manually here as
+## they're tied to the ones in the corresponding POT file
+## (with the same domain).
+##
+## Use "mix gettext.extract --merge" or "mix gettext.merge"
+## to merge POT files into PO files.
+msgid ""
+msgstr ""
+"Language: ja\n"
+"Plural-Forms: nplurals=1\n"
+
+#, elixir-format
+#: lib/qr_code_server_web/live/page_live.html.leex:18
+msgid "generating..."
+msgstr "生成中..."
+
+#, elixir-format
+#: lib/qr_code_server_web/live/page_live.html.leex:7
+msgid "submit"
+msgstr "生成"
+
+#, elixir-format
+#: lib/qr_code_server_web/live/page_live.html.leex:12
+msgid "error correction level"
+msgstr "誤り訂正レベル"

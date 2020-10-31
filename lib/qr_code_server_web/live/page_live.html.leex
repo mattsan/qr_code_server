@@ -9,13 +9,14 @@
   </div>
 </form>
 <form phx-change="change-level">
-  <%= select :code, :level, [:low, :medium, :quartile, :high], selected: @level %>
+  <%= label :code, :level, gettext("error correction level"), class: "label-inline" %>
+  <%= select :code, :level, level_options(), selected: @level %>
 </form>
 
 <div class="qr-code">
   <%= if @generating do %>
     <%= gettext("generating...") %>
-    <%= else %>
+  <% else %>
     <%= @qr_code %>
   <% end %>
 </div>
