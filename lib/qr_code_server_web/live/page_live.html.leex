@@ -18,7 +18,7 @@
       <%= form_for :download, Routes.download_path(QrCodeServerWeb.Endpoint, :download), fn f -> %>
         <%= hidden_input f, :text, value: @text %>
         <%= hidden_input f, :level, value: @level %>
-        <%= submit "download" %>
+        <%= submit gettext("download") %>
       <% end %>
       <%= {:safe, @qr_code} %>
     <% end %>

@@ -11,16 +11,16 @@ msgid ""
 msgstr ""
 
 #, elixir-format
-#: lib/qr_code_server_web/live/page_live.html.leex:18
+#: lib/qr_code_server_web/live/page_live.html.leex:15
 msgid "generating..."
 msgstr ""
 
 #, elixir-format
-#: lib/qr_code_server_web/live/page_live.html.leex:7
-msgid "submit"
+#: lib/qr_code_server_web/live/page_live.html.leex:9
+msgid "error correction level"
 msgstr ""
 
 #, elixir-format
-#: lib/qr_code_server_web/live/page_live.html.leex:12
-msgid "error correction level"
+#: lib/qr_code_server_web/live/page_live.html.leex:21
+msgid "download"
 msgstr ""
