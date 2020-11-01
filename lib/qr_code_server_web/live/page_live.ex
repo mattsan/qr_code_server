@@ -4,15 +4,26 @@ defmodule QrCodeServerWeb.PageLive do
   require Logger
 
   alias QrCodeServer.Encoder
+  import QrCodeServer.Encoder, only: [is_level: 1]
 
   @impl true
-  def mount(_params, _session, socket) do
+  def mount(params, _session, socket) do
+    level =
+      with level when is_binary(level) <- Map.get(params, "level"),
+           level <- String.to_existing_atom(level),
+           true <- is_level(level) do
+        level
+      else
+        _ ->
+          :low
+      end
+
     socket =
-      socket
-      |> assign(
+      assign(
+        socket,
         qr_code: "",
         text: "",
-        level: :low,
+        level: level,
         generating: false
       )
 
