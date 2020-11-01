@@ -25,7 +25,16 @@ defmodule QrCodeServerWeb.PageLive do
 
     socket = assign(socket, text: text, generating: true)
 
-    Encoder.encode_async(socket.assigns.text, socket.assigns.level)
+    socket =
+      case socket.assigns.text do
+        "" ->
+          assign(socket, qr_code: "")
+
+        text ->
+          Encoder.encode_async(socket.assigns.text, socket.assigns.level)
+          socket
+      end
+
 
     {:noreply, socket}
   end
