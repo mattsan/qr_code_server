@@ -7,6 +7,7 @@ defmodule QrCodeServer.Application do
 
   def start(_type, _args) do
     children = [
+      QrCodeServer.Encoder,
       # Start the Telemetry supervisor
       QrCodeServerWeb.Telemetry,
       # Start the PubSub system
