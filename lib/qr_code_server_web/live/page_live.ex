@@ -3,21 +3,11 @@ defmodule QrCodeServerWeb.PageLive do
 
   require Logger
 
-  @levels [:low, :medium, :quartile, :high]
-
-  @level_options [
-                   low: dgettext("error_correction_level", "low"),
-                   medium: dgettext("error_correction_level", "medium"),
-                   quartile: dgettext("error_correction_level", "quartile"),
-                   high: dgettext("error_correction_level", "high")
-                 ]
-                 |> Enum.map(fn {value, key} -> [value: value, key: key] end)
-
-  defguard is_level(level) when level in @levels
+  alias QrCodeServer.Encoder
 
   @impl true
   def mount(_params, _session, socket) do
-    new_socket =
+    socket =
       socket
       |> assign(
         qr_code: "",
@@ -26,69 +16,52 @@ defmodule QrCodeServerWeb.PageLive do
         generating: false
       )
 
-    {:ok, new_socket}
+    {:ok, socket}
   end
 
   @impl true
   def handle_event("update", %{"source" => %{"text" => text}}, socket) do
-    send(self(), :update_qr_code)
+    Logger.debug("updated text: #{inspect(text)}")
 
-    new_socket =
-      socket
-      |> assign(
-        text: text,
-        generating: true
-      )
+    socket = assign(socket, text: text, generating: true)
 
-    {:noreply, new_socket}
+    Encoder.encode(socket.assigns.text, socket.assigns.level)
+
+    {:noreply, socket}
   end
 
   @impl true
   def handle_event("change-level", %{"code" => %{"level" => level}}, socket) do
     Logger.debug("change level: #{socket.assigns.level} -> #{level}")
 
-    send(self(), :update_qr_code)
+    socket = assign(socket, level: String.to_existing_atom(level))
 
-    new_socket =
-      socket
-      |> assign(
-        level: String.to_existing_atom(level),
-        generating: true
-      )
+    socket =
+      case socket.assigns.text do
+        "" ->
+          socket
 
-    {:noreply, new_socket}
+        text ->
+          Encoder.encode(socket.assigns.text, socket.assigns.level)
+          assign(socket, generating: true)
+      end
+
+    {:noreply, socket}
   end
 
   @impl true
-  def handle_info(:update_qr_code, socket) do
-    settings = %QRCode.SvgSettings{scale: 5}
+  def handle_info({:qr_code_encoded, _text, _level, qr_code}, socket) do
+    socket = assign(socket, qr_code: qr_code, generating: false)
 
-    qr_code =
-      with %{text: text, level: level} when byte_size(text) > 0 and is_level(level) <-
-             Map.take(socket.assigns, [:text, :level]),
-           {:ok, qr} <- QRCode.create(text, level) do
-        {:safe, QRCode.Svg.create(qr, settings)}
-      else
-        %{text: text, level: level} ->
-          Logger.warning("Wrong parameter  text: #{inspect(text)} level: #{inspect(level)}")
-          ""
-
-        error ->
-          Logger.warning(inspect(error))
-          ""
-      end
-
-    new_socket =
-      socket
-      |> assign(
-        qr_code: qr_code,
-        generating: false
-      )
-
-    {:noreply, new_socket}
+    {:noreply, socket}
   end
 
   def level_options do
-    @level_options
+    [
+      [value: :low, key: dgettext("error_correction_level", "low")],
+      [value: :medium, key: dgettext("error_correction_level", "medium")],
+      [value: :quartile, key: dgettext("error_correction_level", "quartile")],
+      [value: :high, key: dgettext("error_correction_level", "high")]
+    ]
   end
 end

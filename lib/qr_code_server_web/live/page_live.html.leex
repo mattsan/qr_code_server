@@ -14,6 +14,6 @@
   <%= if @generating do %>
     <%= gettext("generating...") %>
   <% else %>
-    <%= @qr_code %>
+    <%= {:safe, @qr_code} %>
   <% end %>
 </div>
