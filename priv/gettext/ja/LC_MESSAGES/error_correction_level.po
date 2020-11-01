@@ -12,21 +12,21 @@ msgstr ""
 "Plural-Forms: nplurals=1\n"
 
 #, elixir-format
-#: lib/qr_code_server_web/live/page_live.ex:80
+#: lib/qr_code_server_web/live/page_live.ex:64
 msgid "high"
 msgstr "H (30%)"
 
 #, elixir-format
-#: lib/qr_code_server_web/live/page_live.ex:77
+#: lib/qr_code_server_web/live/page_live.ex:61
 msgid "low"
 msgstr "L (7%)"
 
 #, elixir-format
-#: lib/qr_code_server_web/live/page_live.ex:78
+#: lib/qr_code_server_web/live/page_live.ex:62
 msgid "medium"
 msgstr "M (15%)"
 
 #, elixir-format
-#: lib/qr_code_server_web/live/page_live.ex:79
+#: lib/qr_code_server_web/live/page_live.ex:63
 msgid "quartile"
 msgstr "Q (25%)"

@@ -17,8 +17,24 @@ defmodule QrCodeServer.Encoder do
     GenServer.start_link(__MODULE__, opts, name: @name)
   end
 
-  def encode(text, level \\ :low) when is_level(level) and text != "" do
+  def encode(text, level \\ :low)
+
+  def encode(text, level) when is_level(level) and text != "" do
+    GenServer.call(@name, {:encode, text, level})
+  end
+
+  def encode(_, _) do
+    {:error, :invalid_params}
+  end
+
+  def encode_async(text, level \\ :low)
+
+  def encode_async(text, level) when is_level(level) and text != "" do
     GenServer.cast(@name, {:encode, self(), text, level})
+  end
+
+  def encode_async(_, _) do
+    send(self(), {:qr_code_encoding_error, :invalid_params})
   end
 
   def set_scale(scale) when is_integer(scale) and scale > 0 do
@@ -29,6 +45,20 @@ defmodule QrCodeServer.Encoder do
   def init(opts) do
     scale = Keyword.get(opts, :scale, @scale)
     {:ok, %{scale: scale}}
+  end
+
+  @impl true
+  def handle_call({:encode, text, level}, _from, state) do
+    qr_code =
+      with {:ok, qr} <- QRCode.create(text, level) do
+        QRCode.Svg.create(qr, settings(state))
+      else
+        error ->
+          Logger.warning("QR Code encoding error: #{inspect(error)}")
+          ""
+      end
+
+    {:reply, qr_code, state}
   end
 
   @impl true

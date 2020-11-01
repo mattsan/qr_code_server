@@ -18,6 +18,7 @@ defmodule QrCodeServerWeb.Router do
     pipe_through :browser
 
     live "/", PageLive, :index
+    post "/download", DownloadController, :download
   end
 
   # Other scopes may use custom stacks.

@@ -12,16 +12,16 @@ msgstr ""
 "Plural-Forms: nplurals=1\n"
 
 #, elixir-format
-#: lib/qr_code_server_web/live/page_live.html.leex:18
+#: lib/qr_code_server_web/live/page_live.html.leex:15
 msgid "generating..."
 msgstr "生成中..."
 
 #, elixir-format
-#: lib/qr_code_server_web/live/page_live.html.leex:7
-msgid "submit"
-msgstr "生成"
-
-#, elixir-format
-#: lib/qr_code_server_web/live/page_live.html.leex:12
+#: lib/qr_code_server_web/live/page_live.html.leex:9
 msgid "error correction level"
 msgstr "誤り訂正レベル"
+
+#, elixir-format
+#: lib/qr_code_server_web/live/page_live.html.leex:21
+msgid "download"
+msgstr "ダウンロード"

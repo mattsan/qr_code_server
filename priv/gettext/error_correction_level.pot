@@ -11,21 +11,21 @@ msgid ""
 msgstr ""
 
 #, elixir-format
-#: lib/qr_code_server_web/live/page_live.ex:80
+#: lib/qr_code_server_web/live/page_live.ex:64
 msgid "high"
 msgstr ""
 
 #, elixir-format
-#: lib/qr_code_server_web/live/page_live.ex:77
+#: lib/qr_code_server_web/live/page_live.ex:61
 msgid "low"
 msgstr ""
 
 #, elixir-format
-#: lib/qr_code_server_web/live/page_live.ex:78
+#: lib/qr_code_server_web/live/page_live.ex:62
 msgid "medium"
 msgstr ""
 
 #, elixir-format
-#: lib/qr_code_server_web/live/page_live.ex:79
+#: lib/qr_code_server_web/live/page_live.ex:63
 msgid "quartile"
 msgstr ""
